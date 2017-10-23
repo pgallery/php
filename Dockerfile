@@ -44,3 +44,5 @@ RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php
 
 RUN rm -rf /usr/src/php.tar.xz
 
+COPY config/php.ini 		/usr/local/etc/php/
+COPY config/opcache.ini 	/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
