@@ -4,43 +4,33 @@ LABEL maintainer="Ruzhentsev Alexandr <git@pgallery.ru>"
 LABEL version="1.0 beta"
 LABEL description="Docker image PHP 7.1 for pGallery project"
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y libpng12-dev libjpeg-dev libsqlite3-dev \
-        libicu-dev libmemcached-dev libxml2-dev libxslt1-dev libcurl4-gnutls-dev libbz2-dev libzip-dev \
-        libmcrypt-dev libtidy-dev libmagick++-dev libssh-dev librabbitmq-dev git \
-    && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y git libmemcached-dev libpng12-dev libjpeg-dev libfreetype6-dev libgd-dev libpq-dev \
+        libcurl4-gnutls-dev libicu-dev libxml2-dev libxslt1-dev libbz2-dev libzip-dev libmcrypt-dev libmagick++-dev libssh-dev librabbitmq-dev \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-    && pecl install imagick amqp
-
-RUN docker-php-ext-install \
-        bcmath bz2 calendar curl dom fileinfo gd \
-        gettext gettext iconv intl json \
-        mcrypt mysqli opcache pdo pdo_mysql phar \
-        soap tidy xml xmlrpc xsl zip
-
-RUN git clone https://github.com/php-memcached-dev/php-memcached memcached \
+    && pecl install imagick amqp \
+    && docker-php-ext-install bcmath bz2 calendar curl dom fileinfo gd gettext gettext iconv intl json mcrypt opcache pdo pdo_mysql \
+        pdo_pgsql phar soap xml xmlrpc xsl zip \
+    && git clone https://github.com/php-memcached-dev/php-memcached memcached \
     && ( \
         cd memcached && git checkout php7 && phpize \
         && ./configure --with-php-config=/usr/local/bin/php-config \
-        && make && make install \
+        && make -j$(nproc) && make install \
     ) \
-    && rm -r memcached
-
-RUN git clone https://github.com/phpredis/phpredis.git \
+    && rm -r memcached \
+    && git clone https://github.com/phpredis/phpredis.git \
     && ( \
         cd phpredis && phpize \
         && ./configure \
         && make -j$(nproc) && make install \
     ) \
-    && rm -r phpredis
-
-RUN docker-php-ext-enable redis memcached imagick amqp \
+    && rm -r phpredis \
+    && docker-php-ext-enable redis memcached imagick amqp \
     && apt-get purge --auto-remove -y gcc make \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
-
-RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+    && apt-get clean -y \
+    && apt-get autoclean -y \
+    && apt-get autoremove -y \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN rm -rf /usr/src/php.tar.xz
 
