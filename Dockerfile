@@ -6,7 +6,7 @@ LABEL description="Docker image PHP 7.1 for pGallery project"
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y libpng12-dev libjpeg-dev libsqlite3-dev \
         libicu-dev libmemcached-dev libxml2-dev libxslt1-dev libcurl4-gnutls-dev libbz2-dev libzip-dev \
-        libmcrypt-dev libtidy-dev libmagick++-dev libssh-dev librabbitmq-dev \
+        libmcrypt-dev libtidy-dev libmagick++-dev libssh-dev librabbitmq-dev git \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && pecl install imagick amqp
