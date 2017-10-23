@@ -2,9 +2,9 @@ FROM php:7.1-fpm
 
 LABEL maintainer="Ruzhentsev Alexandr <git@pgallery.ru>"
 LABEL version="1.0 beta"
-LABEL description="PHP 7.1 for pGallery project"
+LABEL description="Docker image PHP 7.1 for pGallery project"
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y git libpng12-dev libjpeg-dev libsqlite3-dev \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y libpng12-dev libjpeg-dev libsqlite3-dev \
         libicu-dev libmemcached-dev libxml2-dev libxslt1-dev libcurl4-gnutls-dev libbz2-dev libzip-dev \
         libmcrypt-dev libtidy-dev libmagick++-dev libssh-dev librabbitmq-dev \
     && rm -rf /var/lib/apt/lists/* \
