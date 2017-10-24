@@ -34,5 +34,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y git libmemcached-
 
 RUN rm -rf /usr/src/php.tar.xz
 
-COPY config/php.ini 		/usr/local/etc/php/
+COPY config/php-fpm.conf 	/usr/local/etc/php-fpm.conf
+COPY config/www.conf 		/usr/local/etc/php-fpm.d/www.conf
+COPY config/php.ini 		/usr/local/etc/php/php.ini
 COPY config/opcache.ini 	/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
