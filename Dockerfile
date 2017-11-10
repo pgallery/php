@@ -4,7 +4,9 @@ LABEL maintainer="Ruzhentsev Alexandr <git@pgallery.ru>"
 LABEL version="1.0 beta"
 LABEL description="Docker image PHP 7.1 for pGallery project"
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y git libmemcached-dev libpng12-dev libjpeg-dev libfreetype6-dev libgd-dev libpq-dev \
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y git locales libmemcached-dev libpng12-dev libjpeg-dev libfreetype6-dev libgd-dev libpq-dev \
         libcurl4-gnutls-dev libicu-dev libxml2-dev libxslt1-dev libbz2-dev libzip-dev libmcrypt-dev libmagick++-dev libssh-dev librabbitmq-dev \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && pecl install imagick amqp \
@@ -31,6 +33,13 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y git libmemcached-
     && apt-get autoclean -y \
     && apt-get autoremove -y \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN echo "ru_RU.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen ru_RU.UTF-8 UTF-8 && \
+    dpkg-reconfigure locales
+
+ENV LANG ru_RU.UTF-8
+ENV LC_ALL ru_RU.UTF-8
 
 RUN rm -rf /usr/src/php.tar.xz
 
