@@ -1,12 +1,12 @@
 FROM php:7.1-fpm
 
 LABEL maintainer="Ruzhentsev Alexandr <git@pgallery.ru>"
-LABEL version="1.0 beta"
+LABEL version="1.1"
 LABEL description="Docker image PHP 7.1 for pGallery project"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y git locales libmemcached-dev libpng12-dev libjpeg-dev libfreetype6-dev libgd-dev libpq-dev \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y git locales libmemcached-dev libpng-dev libjpeg-dev libfreetype6-dev libgd-dev libpq-dev \
         libcurl4-gnutls-dev libicu-dev libxml2-dev libxslt1-dev libbz2-dev libzip-dev libmcrypt-dev libmagick++-dev libssh-dev librabbitmq-dev \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && pecl install imagick amqp \
