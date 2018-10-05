@@ -1,7 +1,7 @@
 FROM php:7.1-fpm
 
 LABEL maintainer="Ruzhentsev Alexandr <git@pgallery.ru>"
-LABEL version="1.1"
+LABEL version="1.2"
 LABEL description="Docker image PHP 7.1 for pGallery project"
 
 ENV DEBIAN_FRONTEND noninteractive
